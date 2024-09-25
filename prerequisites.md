@@ -1,6 +1,7 @@
 # Prerequisites
 
 # 1. kubectl (Kubernetes CLI)
+
 A command line tool for working with Kubernetes clusters. For more information, see Installing or updating kubectl at https://kubernetes.io/docs/tasks/tools/
 
 1. To install kubectl
@@ -15,6 +16,9 @@ curl.exe -LO "https://dl.k8s.io/v1.31.0/bin/windows/amd64/kubectl.exe.sha256"
 ```
 kubectl version --client
 ```
+# Reference image of kubectl CLI
+![image (1)](https://github.com/user-attachments/assets/afdadd34-9e06-411a-8a24-6b4d664b3dc5)
+
 
 # 2. eksctl (Amazon EKS CLI)
 
@@ -82,6 +86,8 @@ rm eksctl_windows_amd64.zip
 ```
 eksctl version
 ```
+# Reference image of eksctl CLI
+![image (2)](https://github.com/user-attachments/assets/f5cb28d0-3243-4be3-804e-47b55b6811d1)
 
 # 3. AWS CLI
 
@@ -98,11 +104,17 @@ Please use the below link to download the binary directly into your local machin
 https://awscli.amazonaws.com/AWSCLIV2.msi
 ```
 
-# To install using commands on Windows
+# To install using commands using GitBash on Windows
 
-1. You can run the msiexec command to run the MSI installer
+Reference: https://github.com/aws/aws-cli
+
+1. Download the aws cli
 ```
-msiexec.exe /i https://awscli.amazonaws.com/AWSCLIV2.msi
+curl -o "AWSCLIV2.msi" "https://awscli.amazonaws.com/AWSCLIV2.msi" -o "AWSCLIV2.msi"
+```
+( or )
+```
+curl -LO "https://awscli.amazonaws.com/AWSCLIV2.msi"
 ```
 2. Check if aws cli is installed
 ```
@@ -123,3 +135,6 @@ aws configure
 ```
 aws --version
 ```
+# Reference images of aws CLI
+![image (5)](https://github.com/user-attachments/assets/792ff4ab-eeb0-4535-b39c-95b59362ffaa)
+![image (3)](https://github.com/user-attachments/assets/92c17821-4e36-4ba2-8066-11d0cc1dc005)
