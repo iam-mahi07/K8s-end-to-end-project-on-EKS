@@ -1,16 +1,14 @@
-# Kubernetes end-to-end project on Amazon EKS
+# Kubernetes end-to-end project on Amazon EKS :rocket::cloud:
 
-Hey! Welcome👋
+:dart: This repo would help you to gain a practical hands-on experience on how to deploy a web application on AWS EKS using Kubernetes. I promise!
 
-This repo would help you to gain a practical hands-on experience to deploy a web application on AWS EKS using Kubernetes. I promise!
-
-# Project Title & Description
+# Project Title & Description :pencil:
 
 Title: Deploying a 2048 Game Application on Amazon EKS with ALB using Kubernetes.
 
 Brief Description: This project demonstrates the deployment of a containerized web application (2048 game) on AWS using Kubernetes and EKS.
 
-# Tools & Technologies Used
+# Tools & Technologies Used :hammer_and_wrench::gear::computer:
 
 1. AWS EKS (Elastic Kubernetes Service)
 
@@ -24,7 +22,7 @@ Brief Description: This project demonstrates the deployment of a containerized w
 
 6. kubectl, eksctl, AWS CLI (for command-line interaction)
 
-# Key Achievements
+# Key Achievements :1st_place_medal:
 
 1. Deployed a scalable web application using Kubernetes on AWS EKS, ensuring high availability and fault tolerance.
 
@@ -34,15 +32,15 @@ Brief Description: This project demonstrates the deployment of a containerized w
 
 4. Leveraged AWS Fargate to run pods without managing underlying EC2 instances, reducing infrastructure management overhead.
 
-# Let's jump into the pratical now!!
+# Let's jump into the pratical now!! :mag_right:
 
-Follow these steps after the prerequisites are setup.
+📌 Follow these steps after the prerequisites are setup.
 
 # Step-1: Installation of EKS
 
-To find the below steps, please refer to https://docs.aws.amazon.com/eks/latest/userguide/getting-started-eksctl.html
+:bulb: This step creates an EKS cluster using a Fargate (serverless approach instead of EC2 instances), it automatically creates all the Stack with the help CloudFormation that's required for the cluster to operate. You can install or setup the EKS cluster with the help of EC2 instances as well, it's upto you to choose which one based on the requirement. 
 
-You can install or setup the EKS either using Fargate or EC2 instances as well. 
+To find the below steps, please refer to https://docs.aws.amazon.com/eks/latest/userguide/getting-started-eksctl.html
 
 Install EKS using Fargate
 ```
@@ -60,11 +58,11 @@ eksctl delete cluster --name "cluster-name" --region "region-name"
 
 ![image (16)](https://github.com/user-attachments/assets/cf29ff43-9e0d-497d-9eb5-e26203e027fb)
 
-# Step-2: Configuration of IAM OIDC provider
+# Step-2: Configuration of IAM OIDC identity provider
+
+:bulb: This step creates an IAM OIDC identity provider, enabling the ALB controller to securely interact with AWS resources by integrating with IAM. 
 
 To find the below steps. please refer to https://docs.aws.amazon.com/eks/latest/userguide/enable-iam-roles-for-service-accounts.html
-
-For the ALB controller to talk to AWS resources, it needs to have the IAM integrated. So, we use IAM OIDC provider.
 
 i) To create an IAM OIDC identity provider for your cluster with eksctl:
 ```
@@ -78,7 +76,7 @@ If nothing is found, then create one;
 ```
 eksctl utils associate-iam-oidc-provider --cluster $cluster_name --approve
 ```
-# Reference images of IAM OIDC creation
+# Reference images of IAM OIDC identity provider creation
 
 ![image (7)](https://github.com/user-attachments/assets/23a10206-586b-44e9-b8c1-1315d0768f7a)
 
@@ -88,10 +86,9 @@ eksctl utils associate-iam-oidc-provider --cluster $cluster_name --approve
 
 First, create an IAM policy with all necessary permissions (e.g., to manage load balancers) and then create an IAM role, attach the policy to it, and associate this IAM role with the IAM service account.
 
-Here we’re creating an IAM service account for the AWS Load Balancer (ALB) Controller on your EKS cluster. This allows the controller uses the permissions in the IAM policy to interact with AWS resources (like creating and managing the Application Load Balancer) for your 2048 game web app.
+:bulb: This step creates an IAM service account in your EKS cluster's kube-system namespace, attaches a role with the necessary AWS Load Balancer Controller permissions (policy), and links it to your cluster to interact with AWS resources securely, in specific to our case to manage load balancers (Application Load Balancer in our case) for applications (web app - 2048 in our case).
 
-NOTE: You only need to create an IAM Role for the AWS Load Balancer Controller one per AWS account. Check if AmazonEKSLoadBalancerControllerRole exists in the IAM Console. If the role exists, skip to Step-4 (Install AWS Load Balancer Controller).
-
+📌 NOTE: You only need to create an IAM Role for the AWS Load Balancer Controller one per AWS account. Check if AmazonEKSLoadBalancerControllerRole exists in the IAM Console. If the role exists, skip to Step-4 (Install AWS Load Balancer Controller).
 
 To find the below steps, please refer to https://docs.aws.amazon.com/eks/latest/userguide/lbc-helm.html
 
@@ -118,9 +115,9 @@ eksctl create iamserviceaccount --cluster=<your-cluster-name> --namespace=kube-s
 
 # Step:4 Installation of AWS Load Balancer Controller
 
-We create an ALB Ingress controller, which reads the Ingress resource and it’ll create an Application Load Balancer to access the application with an address and just creating ALB is of no use. So, it’ll also configure entire load balancer with target groups, ports etc and everything is taken care by the Ingress Controller only.
+💡 This step creates an Ingress controller ( you can call it as AWS Load Balancer Controller or ALB controller) that reads/watches the Ingress resource and creates an Application Load Balancer (address) through which we can access the application and, creating an Ingress would be of no use without an Ingress controller. The target groups, listeners and rules, security groups and everything that's required for the load balancer is taken care by the Ingress Controller itself.
 
-Before executing the helm commands to install ALB controller, first install helm on windows to perform the helm commands. 
+📌 NOTE: Before executing the helm commands to install ALB controller, first install helm on windows to perform the helm commands. 
 
 Reference for Helm download: https://helm.sh/docs/intro/install/#from-the-binary-releases
 
@@ -200,7 +197,7 @@ kubectl get deployment -n kube-system aws-load-balancer-controller
 
 # Step-4: To deploy the application (2048 game)
 
-In this step, we create a Fargate profile inside a cluster within a desired region to deploy the application in a namespace. In the next step, we create namespace, deployment, service, ingress, alb controller, load balancer through which we access the web application (2048 game). 
+:bulb: In this step, we create a Fargate profile inside a cluster within a desired region to deploy the application. We also, create an isolated namespace, deployment, service, ingress, and, ingress controller creates a load balancer through which we access the application (2048 game). 
 
 To find the below steps, please refer to https://docs.aws.amazon.com/eks/latest/userguide/alb-ingress.html
 
@@ -226,5 +223,5 @@ kubectl apply -f https://raw.githubusercontent.com/kubernetes-sigs/aws-load-bala
 
 ![image (12)](https://github.com/user-attachments/assets/e32a4d5c-1ff2-4041-a59f-609109346e23)
 
-# Congratulations you've deployed the application!! :clap: :heart_on_fire:
+# Congratulations you've deployed the application!! :rocket::clap::heart_on_fire:
 # Thanks for visiting and trying :wave:
