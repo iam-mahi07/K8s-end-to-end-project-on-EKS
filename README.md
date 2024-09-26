@@ -32,7 +32,7 @@ Description: This project demonstrates the deployment of a containerized web app
 
 4. Leveraged AWS Fargate to run pods without managing underlying EC2 instances, reducing infrastructure management overhead.
 
-# Let's jump into the pratical now!! :mag_right:
+# Let's jump into the practical now!! :mag_right:
 
 📌 Follow these steps after the prerequisites are setup.
 
