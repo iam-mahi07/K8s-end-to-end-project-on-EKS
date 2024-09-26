@@ -52,6 +52,14 @@ Delete the cluster
 ```
 eksctl delete cluster --name "cluster-name" --region "region-name"
 ```
+# Reference image of EKS cluster creation
+
+![image (6)](https://github.com/user-attachments/assets/c0089dd7-164a-4521-a2f9-b66384bde71b)
+
+# Reference image of EKS cluster deletion
+
+![image (16)](https://github.com/user-attachments/assets/cf29ff43-9e0d-497d-9eb5-e26203e027fb)
+
 # Step-2: Configuration of IAM OIDC provider
 
 To find the below steps. please refer to https://docs.aws.amazon.com/eks/latest/userguide/enable-iam-roles-for-service-accounts.html
@@ -70,6 +78,12 @@ If nothing is found, then create one;
 ```
 eksctl utils associate-iam-oidc-provider --cluster $cluster_name --approve
 ```
+# Reference images of IAM OIDC creation
+
+![image (7)](https://github.com/user-attachments/assets/23a10206-586b-44e9-b8c1-1315d0768f7a)
+
+![image (8)](https://github.com/user-attachments/assets/91ec6ea5-2fd0-45bb-9e36-6bbaa92dd8ee)
+
 # Step-3: Creation of IAM policy and IAM Role
 
 First, create an IAM policy with all necessary permissions (e.g., to manage load balancers) and then create an IAM role, attach the policy to it, and associate this IAM role with the IAM service account.
@@ -93,6 +107,14 @@ iii) To create IAM Role:
 ```
 eksctl create iamserviceaccount --cluster=<your-cluster-name> --namespace=kube-system --name=aws-load-balancer-controller --role-name AmazonEKSLoadBalancerControllerRole --attach-policy-arn=arn:aws:iam::<your-aws-account-id>:policy/AWSLoadBalancerControllerIAMPolicy --approve
 ```
+# Reference images of IAM policy and IAM Role
+
+![image (9)](https://github.com/user-attachments/assets/8633d66e-aa22-4516-a547-2fe1680a73f6)
+
+![image (11)](https://github.com/user-attachments/assets/8c8fbc17-b16d-48d3-9d7e-5b95ba897f2b)
+
+![image (10)](https://github.com/user-attachments/assets/8b0e157c-2fcf-4eab-88d0-1006133c39cd)
+
 
 # Step:4 Installation of AWS Load Balancer Controller
 
@@ -160,15 +182,25 @@ ii) To update the helm repo (to make sure that you have the most recent charts):
 ```
 helm repo update eks
 ```
-iii) To install: 
+# To install AWS ALB Controller
+
+i) Create ALB using the helm
 ```
 helm install aws-load-balancer-controller eks/aws-load-balancer-controller -n kube-system --set clusterName=<your-cluster-name> --set serviceAccount.create=false --set serviceAccount.name=aws-load-balancer-controller --set region=<region> --set vpcId=<your-vpc-id>
 ```
-iv) To verify that the controller is installed and running
+ii) To verify that the controller is installed and running
 ```
 kubectl get deployment -n kube-system aws-load-balancer-controller
 ```
+
+# Reference image of ALB controller creation using helm
+
+![image (17)](https://github.com/user-attachments/assets/d2854290-44bb-48dc-baaf-b362b250321f)
+
+
 # Step-4: To deploy the application (2048 game)
+
+In this step, we create a Fargate profile inside a cluster within a desired region to deploy the application in a namespace. In the next step, we create namespace, deployment, service, ingress, alb controller, load balancer through which we access the web application (2048 game). 
 
 To find the below steps, please refer to https://docs.aws.amazon.com/eks/latest/userguide/alb-ingress.html
 
@@ -180,9 +212,19 @@ ii) Now deploy the deployment, service, ingress run the following command.
 ```
 kubectl apply -f https://raw.githubusercontent.com/kubernetes-sigs/aws-load-balancer-controller/v2.7.2/docs/examples/2048/2048_full.yaml
 ```
+# Reference images of final O/P such as Fargate, Ingress, Load balancer and 2048 game
 
+![image (13)](https://github.com/user-attachments/assets/9d54fa80-5d5e-4509-8779-17549f0ebbce)
 
+![image (18)](https://github.com/user-attachments/assets/29e5f280-fa09-4ca0-88a2-faa62a59b7fa)
 
+![image (19)](https://github.com/user-attachments/assets/7c6636e6-7d08-4a0d-ab60-56d00cef56c6)
+
+![image (15)](https://github.com/user-attachments/assets/c248e9b8-1b80-40ec-a726-4968b3a0c765)
+
+![image (14)](https://github.com/user-attachments/assets/206ee272-a0f7-49a9-9c5c-13d6b66be1d0)
+
+![image (12)](https://github.com/user-attachments/assets/e32a4d5c-1ff2-4041-a59f-609109346e23)
 
 # Congratulations you've deployed the application!! :clap: :heart_on_fire:
 # Thanks for visiting and trying :wave:
